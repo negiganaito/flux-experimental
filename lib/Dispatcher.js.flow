@@ -127,22 +127,21 @@ class Dispatcher<TPayload> {
    * a token that can be used with `waitFor()`.
    */
   register(callback: (payload: TPayload) => void, defaultID): DispatchToken {
-    // var id = _prefix + this._lastID++;
-
-    var id = this.__genID(defaultID)
-
+    var id = this.__genID(defaultID) // _prefix + this._lastID++;
     this._callbacks[id] = callback;
     return id;
   }
 
+
   __genID(id){
     var _id = id ? id + "_" : _prefix;
     id = id || _id + this._lastID++
-    while(this._callbacks.get(id)){
+    while(this._callbacks[id]){
       id = _id + this._lastID++;
     }
     return id
   }
+
 
   /**
    * Removes a callback based on its token.
